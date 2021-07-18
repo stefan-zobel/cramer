@@ -4,3 +4,4 @@
 /.project
 /runtime/
 /upload/
+/vector_avx2.dll

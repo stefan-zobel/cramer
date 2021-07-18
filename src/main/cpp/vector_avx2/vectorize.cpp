@@ -118,6 +118,32 @@ extern "C" {
         }
         return NOT_REACHED_F;
     }
+
+    /*
+     * Class:     net_cramer_simd_SIMD
+     * Method:    approx_equal_double_n
+     * Signature: ([D[DIDDZ)Z
+     */
+    JNIEXPORT jboolean JNICALL Java_net_cramer_simd_SIMD_approx_1equal_1double_1n
+    (JNIEnv* env, jclass, jdoubleArray a, jdoubleArray b, jint count, jdouble relTol, jdouble absTol, jboolean useCrit) {
+        if (count <= 0 || a == nullptr || b == nullptr || relTol < 0.0 || absTol < 0.0) {
+            return JNI_FALSE;
+        }
+        return JNI_FALSE;
+    }
+
+    /*
+     * Class:     net_cramer_simd_SIMD
+     * Method:    approx_equal_float_n
+     * Signature: ([F[FIFFZ)Z
+     */
+    JNIEXPORT jboolean JNICALL Java_net_cramer_simd_SIMD_approx_1equal_1float_1n
+    (JNIEnv* env, jclass, jfloatArray a, jfloatArray b, jint count, jfloat relTol, jfloat absTol, jboolean useCrit) {
+        if (count <= 0 || a == nullptr || b == nullptr || relTol < 0.0f || absTol < 0.0f) {
+            return JNI_FALSE;
+        }
+        return JNI_FALSE;
+    }
 #ifdef __cplusplus
 }
 #endif

@@ -36,9 +36,23 @@ public final class SIMD {
         return l2norm_float_n(array, count, USE_CRITICAL);
     }
 
+    public static boolean approxEqualDouble(double[] a, double[] b, int count, double relTol, double absTol) {
+        return approx_equal_double_n(a, b, count, relTol, absTol, USE_CRITICAL);
+    }
+
+    public static boolean approxEqualFloat(float[] a, float[] b, int count, float relTol, float absTol) {
+        return approx_equal_float_n(a, b, count, relTol, absTol, USE_CRITICAL);
+    }
+
     private static native double l2norm_double_n(double[] array, int count, boolean useCriticalRegion);
 
     private static native float l2norm_float_n(float[] array, int count, boolean useCriticalRegion);
+
+    private static native boolean approx_equal_double_n(double[] a, double[] b, int count, double relTol, double absTol,
+            boolean useCriticalRegion);
+
+    private static native boolean approx_equal_float_n(float[] a, float[] b, int count, float relTol, float absTol,
+            boolean useCriticalRegion);
 
     private SIMD() {
         throw new AssertionError();

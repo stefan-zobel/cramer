@@ -60,6 +60,8 @@ constexpr int MM_HINT_T1 = 2;
 
 float l2_norm_float(float* f, int64_t count);
 double l2_norm_double(double* d, int64_t count);
+bool approx_equal_double(double* a, double* b, int64_t count, double relTol, double absTol);
+bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float absTol);
 
 
 #ifdef __cplusplus
@@ -126,8 +128,31 @@ extern "C" {
      */
     JNIEXPORT jboolean JNICALL Java_net_cramer_simd_SIMD_approx_1equal_1double_1n
     (JNIEnv* env, jclass, jdoubleArray a, jdoubleArray b, jint count, jdouble relTol, jdouble absTol, jboolean useCrit) {
-        if (count <= 0 || a == nullptr || b == nullptr || relTol < 0.0 || absTol < 0.0) {
+        if (count == 0 || a == nullptr || b == nullptr) {
             return JNI_FALSE;
+        }
+        if (count < 0 || (count & 1) == 1) {
+            throwJavaRuntimeException(env, "%s %d", "approx_equal_double - invalid count argument:", count);
+            return JNI_FALSE;
+        }
+        if (relTol < 0.0) {
+            throwJavaRuntimeException(env, "%s %f", "approx_equal_double - relTol < 0.0 :", relTol);
+            return JNI_FALSE;
+        }
+        if (absTol < 0.0) {
+            throwJavaRuntimeException(env, "%s %f", "approx_equal_double - absTol < 0.0 :", absTol);
+            return JNI_FALSE;
+        }
+        try {
+            DoubleArray aa = DoubleArray(env, a, count, useCrit);
+            DoubleArray bb = DoubleArray(env, b, count, useCrit);
+            return approx_equal_double(aa.ptr(), bb.ptr(), count, relTol, absTol) ? JNI_TRUE : JNI_FALSE;
+        }
+        catch (const JException& ex) {
+            throwJavaRuntimeException(env, "%s %s", "approx_equal_double", ex.what());
+        }
+        catch (...) {
+            throwJavaRuntimeException(env, "%s", "approx_equal_double: caught unknown exception");
         }
         return JNI_FALSE;
     }
@@ -139,8 +164,31 @@ extern "C" {
      */
     JNIEXPORT jboolean JNICALL Java_net_cramer_simd_SIMD_approx_1equal_1float_1n
     (JNIEnv* env, jclass, jfloatArray a, jfloatArray b, jint count, jfloat relTol, jfloat absTol, jboolean useCrit) {
-        if (count <= 0 || a == nullptr || b == nullptr || relTol < 0.0f || absTol < 0.0f) {
+        if (count == 0 || a == nullptr || b == nullptr) {
             return JNI_FALSE;
+        }
+        if (count < 0 || (count & 1) == 1) {
+            throwJavaRuntimeException(env, "%s %d", "approx_equal_float - invalid count argument:", count);
+            return JNI_FALSE;
+        }
+        if (relTol < 0.0f) {
+            throwJavaRuntimeException(env, "%s %f", "approx_equal_float - relTol < 0.0f :", relTol);
+            return JNI_FALSE;
+        }
+        if (absTol < 0.0f) {
+            throwJavaRuntimeException(env, "%s %f", "approx_equal_float - absTol < 0.0f :", absTol);
+            return JNI_FALSE;
+        }
+        try {
+            FloatArray aa = FloatArray(env, a, count, useCrit);
+            FloatArray bb = FloatArray(env, b, count, useCrit);
+            return approx_equal_float(aa.ptr(), bb.ptr(), count, relTol, absTol) ? JNI_TRUE : JNI_FALSE;
+        }
+        catch (const JException& ex) {
+            throwJavaRuntimeException(env, "%s %s", "approx_equal_float", ex.what());
+        }
+        catch (...) {
+            throwJavaRuntimeException(env, "%s", "approx_equal_float: caught unknown exception");
         }
         return JNI_FALSE;
     }
@@ -241,4 +289,14 @@ float l2_norm_float(float* f, int64_t count) {
     }
 
     return std::sqrt(sumsquared) / scale;
+}
+
+bool approx_equal_double(double* a, double* b, int64_t count, double relTol, double absTol) {
+    // TODO
+    return false;
+}
+
+bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float absTol) {
+    // TODO
+    return false;
 }

@@ -32,6 +32,15 @@
         <project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>net.sourceforge.streamsupport</groupId>
+            <artifactId>JAMU</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

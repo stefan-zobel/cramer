@@ -62,6 +62,8 @@ float l2_norm_float(float* f, int64_t count);
 double l2_norm_double(double* d, int64_t count);
 bool approx_equal_double(double* a, double* b, int64_t count, double relTol, double absTol);
 bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float absTol);
+double l1_norm_double(double* a, double* b, int64_t count);
+float l1_norm_float(float* a, float* b, int64_t count);
 
 
 #ifdef __cplusplus
@@ -191,6 +193,62 @@ extern "C" {
             throwJavaRuntimeException(env, "%s", "approx_equal_float: caught unknown exception");
         }
         return JNI_FALSE;
+    }
+
+    /*
+     * Class:     net_cramer_simd_SIMD
+     * Method:    distance_double_n
+     * Signature: ([D[DIZ)D
+     */
+    JNIEXPORT jdouble JNICALL Java_net_cramer_simd_SIMD_distance_1double_1n
+    (JNIEnv* env, jclass, jdoubleArray a, jdoubleArray b, jint count, jboolean useCrit) {
+        if (count == 0 || a == nullptr || b == nullptr) {
+            return 0.0;
+        }
+        if (count < 0) {
+            throwJavaRuntimeException(env, "%s %d", "distance_double - negative count argument:", count);
+            return NOT_REACHED_D;
+        }
+        try {
+            DoubleArray aa = DoubleArray(env, a, count, useCrit);
+            DoubleArray bb = DoubleArray(env, b, count, useCrit);
+            return l1_norm_double(aa.ptr(), bb.ptr(), count);
+        }
+        catch (const JException& ex) {
+            throwJavaRuntimeException(env, "%s %s", "distance_double", ex.what());
+        }
+        catch (...) {
+            throwJavaRuntimeException(env, "%s", "distance_double: caught unknown exception");
+        }
+        return NOT_REACHED_D;
+    }
+
+    /*
+     * Class:     net_cramer_simd_SIMD
+     * Method:    distance_float_n
+     * Signature: ([F[FIZ)F
+     */
+    JNIEXPORT jfloat JNICALL Java_net_cramer_simd_SIMD_distance_1float_1n
+    (JNIEnv* env, jclass, jfloatArray a, jfloatArray b, jint count, jboolean useCrit) {
+        if (count == 0 || a == nullptr || b == nullptr) {
+            return 0.0f;
+        }
+        if (count < 0) {
+            throwJavaRuntimeException(env, "%s %d", "distance_float - negative count argument:", count);
+            return NOT_REACHED_F;
+        }
+        try {
+            FloatArray aa = FloatArray(env, a, count, useCrit);
+            FloatArray bb = FloatArray(env, b, count, useCrit);
+            return l1_norm_float(aa.ptr(), bb.ptr(), count);
+        }
+        catch (const JException& ex) {
+            throwJavaRuntimeException(env, "%s %s", "distance_float", ex.what());
+        }
+        catch (...) {
+            throwJavaRuntimeException(env, "%s", "distance_float: caught unknown exception");
+        }
+        return NOT_REACHED_F;
     }
 #ifdef __cplusplus
 }
@@ -351,4 +409,16 @@ bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float a
         }
     }
     return true;
+}
+
+double l1_norm_double(double* a, double* b, int64_t count) {
+    Vec8d vecA;
+    Vec8d vecB;
+    return -1.0; // TODO
+}
+
+float l1_norm_float(float* a, float* b, int64_t count) {
+    Vec16f vecA;
+    Vec16f vecB;
+    return -1.0f; // TODO
 }

@@ -48,7 +48,7 @@ public final class SIMD {
         return distance_double_n(a, b, count, USE_CRITICAL);
     }
 
-    public static double distanceFloat(float[] a, float[] b, int count) {
+    public static float distanceFloat(float[] a, float[] b, int count) {
         return distance_float_n(a, b, count, USE_CRITICAL);
     }
 
@@ -64,7 +64,7 @@ public final class SIMD {
 
     private static native double distance_double_n(double[] a, double[] b, int count, boolean useCriticalRegion);
 
-    private static native double distance_float_n(float[] a, float[] b, int count, boolean useCriticalRegion);
+    private static native float distance_float_n(float[] a, float[] b, int count, boolean useCriticalRegion);
 
     private SIMD() {
         throw new AssertionError();

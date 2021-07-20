@@ -298,8 +298,8 @@ bool approx_equal_double(double* a, double* b, int64_t count, double relTol, dou
 
     int i;
     for (i = 0; i < count - 7; i += STEP_8) {
-        PREFETCH(a + i + 63 * STEP_8); // XXX 31 ??
-        PREFETCH(b + i + 63 * STEP_8); // XXX 31 ??
+        PREFETCH(a + i + 63 * STEP_8);
+        PREFETCH(b + i + 63 * STEP_8);
         vecA.load(a + i);
         vecB.load(b + i);
         if (horizontal_or(vecA != vecB)) {
@@ -329,8 +329,8 @@ bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float a
 
     int i;
     for (i = 0; i < count - 15; i += STEP_16) {
-        PREFETCH(a + i + 63 * STEP_16); // XXX 31 ??
-        PREFETCH(b + i + 63 * STEP_16); // XXX 31 ??
+        PREFETCH(a + i + 63 * STEP_16);
+        PREFETCH(b + i + 63 * STEP_16);
         vecA.load(a + i);
         vecB.load(b + i);
         if (horizontal_or(vecA != vecB)) {

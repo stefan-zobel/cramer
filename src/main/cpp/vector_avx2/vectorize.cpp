@@ -292,11 +292,63 @@ float l2_norm_float(float* f, int64_t count) {
 }
 
 bool approx_equal_double(double* a, double* b, int64_t count, double relTol, double absTol) {
-    // TODO
-    return false;
+    Vec8d vAbsTol = Vec8d(absTol);
+    Vec8d vecA;
+    Vec8d vecB;
+
+    int i;
+    for (i = 0; i < count - 7; i += STEP_8) {
+        PREFETCH(a + i + 63 * STEP_8); // XXX 31 ??
+        PREFETCH(b + i + 63 * STEP_8); // XXX 31 ??
+        vecA.load(a + i);
+        vecB.load(b + i);
+        if (horizontal_or(vecA != vecB)) {
+            Vec8d absdiff = abs(vecA - vecB);
+            if (horizontal_add(select(absdiff <= vAbsTol, 0.0, select(absdiff <= relTol * max(abs(vecA), abs(vecB)), 0.0, 1.0))) > 0.0) {
+                return false;
+            }
+        }
+    }
+    for (; i < count; ++i) {
+        double ai = a[i];
+        double bi = b[i];
+        if (ai != bi) {
+            double absdiff = std::abs(ai - bi);
+            if (!(absdiff <= absTol || absdiff <= relTol * std::max(std::abs(ai), std::abs(bi)))) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float absTol) {
-    // TODO
-    return false;
+    Vec16f vAbsTol = Vec16f(absTol);
+    Vec16f vecA;
+    Vec16f vecB;
+
+    int i;
+    for (i = 0; i < count - 15; i += STEP_16) {
+        PREFETCH(a + i + 63 * STEP_16); // XXX 31 ??
+        PREFETCH(b + i + 63 * STEP_16); // XXX 31 ??
+        vecA.load(a + i);
+        vecB.load(b + i);
+        if (horizontal_or(vecA != vecB)) {
+            Vec16f absdiff = abs(vecA - vecB);
+            if (horizontal_add(select(absdiff <= vAbsTol, 0.0f, select(absdiff <= relTol * max(abs(vecA), abs(vecB)), 0.0f, 1.0f))) > 0.0f) {
+                return false;
+            }
+        }
+    }
+    for (; i < count; ++i) {
+        float ai = a[i];
+        float bi = b[i];
+        if (ai != bi) {
+            float absdiff = std::abs(ai - bi);
+            if (!(absdiff <= absTol || absdiff <= relTol * std::max(std::abs(ai), std::abs(bi)))) {
+                return false;
+            }
+        }
+    }
+    return true;
 }

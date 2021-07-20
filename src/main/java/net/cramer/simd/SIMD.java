@@ -44,6 +44,14 @@ public final class SIMD {
         return approx_equal_float_n(a, b, count, relTol, absTol, USE_CRITICAL);
     }
 
+    public static double distanceDouble(double[] a, double[] b, int count) {
+        return distance_double_n(a, b, count, USE_CRITICAL);
+    }
+
+    public static double distanceFloat(float[] a, float[] b, int count) {
+        return distance_float_n(a, b, count, USE_CRITICAL);
+    }
+
     private static native double l2norm_double_n(double[] array, int count, boolean useCriticalRegion);
 
     private static native float l2norm_float_n(float[] array, int count, boolean useCriticalRegion);
@@ -53,6 +61,10 @@ public final class SIMD {
 
     private static native boolean approx_equal_float_n(float[] a, float[] b, int count, float relTol, float absTol,
             boolean useCriticalRegion);
+
+    private static native double distance_double_n(double[] a, double[] b, int count, boolean useCriticalRegion);
+
+    private static native double distance_float_n(float[] a, float[] b, int count, boolean useCriticalRegion);
 
     private SIMD() {
         throw new AssertionError();

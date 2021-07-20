@@ -304,7 +304,7 @@ bool approx_equal_double(double* a, double* b, int64_t count, double relTol, dou
         vecB.load(b + i);
         if (horizontal_or(vecA != vecB)) {
             Vec8d absdiff = abs(vecA - vecB);
-            if (horizontal_add(select(absdiff <= vAbsTol, 0.0, select(absdiff <= relTol * max(abs(vecA), abs(vecB)), 0.0, 1.0))) > 0.0) {
+            if (horizontal_add(select(absdiff <= vAbsTol, Vec8d(0.0), select(absdiff <= relTol * max(abs(vecA), abs(vecB)), Vec8d(0.0), Vec8d(1.0)))) > 0.0) {
                 return false;
             }
         }
@@ -335,7 +335,7 @@ bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float a
         vecB.load(b + i);
         if (horizontal_or(vecA != vecB)) {
             Vec16f absdiff = abs(vecA - vecB);
-            if (horizontal_add(select(absdiff <= vAbsTol, 0.0f, select(absdiff <= relTol * max(abs(vecA), abs(vecB)), 0.0f, 1.0f))) > 0.0f) {
+            if (horizontal_add(select(absdiff <= vAbsTol, Vec16f(0.0f), select(absdiff <= relTol * max(abs(vecA), abs(vecB)), Vec16f(0.0f), Vec16f(1.0f)))) > 0.0f) {
                 return false;
             }
         }

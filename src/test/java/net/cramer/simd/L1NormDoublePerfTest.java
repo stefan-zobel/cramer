@@ -56,5 +56,6 @@ public final class L1NormDoublePerfTest {
         }
         System.out.println("SIMD   average : " + sum2 / (1_000_000.0 * (ITERS - 1)) + " ms (" + i + ": " + norm1 + ")");
         System.out.println("SIMD   average : " + sum2 / ((ITERS - 1)) + " ns (" + i + ": " + norm1 + ")");
+        System.out.println("SIMD   advantage : " + (sum2 / sum1));
     }
 }

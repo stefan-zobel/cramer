@@ -145,6 +145,9 @@ extern "C" {
             throwJavaRuntimeException(env, "%s %f", "approx_equal_double - absTol < 0.0 :", absTol);
             return JNI_FALSE;
         }
+        if (a == b) {
+            return JNI_TRUE;
+        }
         try {
             DoubleArray aa = DoubleArray(env, a, count, useCrit);
             DoubleArray bb = DoubleArray(env, b, count, useCrit);
@@ -181,6 +184,9 @@ extern "C" {
             throwJavaRuntimeException(env, "%s %f", "approx_equal_float - absTol < 0.0f :", absTol);
             return JNI_FALSE;
         }
+        if (a == b) {
+            return JNI_TRUE;
+        }
         try {
             FloatArray aa = FloatArray(env, a, count, useCrit);
             FloatArray bb = FloatArray(env, b, count, useCrit);
@@ -202,7 +208,7 @@ extern "C" {
      */
     JNIEXPORT jdouble JNICALL Java_net_cramer_simd_SIMD_distance_1double_1n
     (JNIEnv* env, jclass, jdoubleArray a, jdoubleArray b, jint count, jboolean useCrit) {
-        if (count == 0 || a == nullptr || b == nullptr) {
+        if (count == 0 || a == nullptr || b == nullptr || a == b) {
             return 0.0;
         }
         if (count < 0) {
@@ -230,7 +236,7 @@ extern "C" {
      */
     JNIEXPORT jfloat JNICALL Java_net_cramer_simd_SIMD_distance_1float_1n
     (JNIEnv* env, jclass, jfloatArray a, jfloatArray b, jint count, jboolean useCrit) {
-        if (count == 0 || a == nullptr || b == nullptr) {
+        if (count == 0 || a == nullptr || b == nullptr || a == b) {
             return 0.0f;
         }
         if (count < 0) {

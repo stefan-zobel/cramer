@@ -414,11 +414,49 @@ bool approx_equal_float(float* a, float* b, int64_t count, float relTol, float a
 double l1_norm_double(double* a, double* b, int64_t count) {
     Vec8d vecA;
     Vec8d vecB;
-    return -1.0; // TODO
+    double d1 = 0.0;
+
+    int i;
+    for (i = 0; i < count - 7; i += STEP_8) {
+        PREFETCH(a + i + 63 * STEP_8);
+        PREFETCH(b + i + 63 * STEP_8);
+        vecA.load(a + i);
+        vecB.load(b + i);
+        if (horizontal_or(vecA != vecB)) {
+            d1 += horizontal_add(abs(vecA - vecB));
+        }
+    }
+    for (; i < count; ++i) {
+        double ai = a[i];
+        double bi = b[i];
+        if (ai != bi) {
+            d1 += std::abs(ai - bi);
+        }
+    }
+    return d1;
 }
 
 float l1_norm_float(float* a, float* b, int64_t count) {
     Vec16f vecA;
     Vec16f vecB;
-    return -1.0f; // TODO
+    float d1 = 0.0f;
+
+    int i;
+    for (i = 0; i < count - 15; i += STEP_16) {
+        PREFETCH(a + i + 63 * STEP_16);
+        PREFETCH(b + i + 63 * STEP_16);
+        vecA.load(a + i);
+        vecB.load(b + i);
+        if (horizontal_or(vecA != vecB)) {
+            d1 += horizontal_add(abs(vecA - vecB));
+        }
+    }
+    for (; i < count; ++i) {
+        float ai = a[i];
+        float bi = b[i];
+        if (ai != bi) {
+            d1 += std::abs(ai - bi);
+        }
+    }
+    return d1;
 }

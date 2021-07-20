@@ -131,8 +131,8 @@ extern "C" {
         if (count == 0 || a == nullptr || b == nullptr) {
             return JNI_FALSE;
         }
-        if (count < 0 || (count & 1) == 1) {
-            throwJavaRuntimeException(env, "%s %d", "approx_equal_double - invalid count argument:", count);
+        if (count < 0) {
+            throwJavaRuntimeException(env, "%s %d", "approx_equal_double - negative count argument:", count);
             return JNI_FALSE;
         }
         if (relTol < 0.0) {
@@ -167,8 +167,8 @@ extern "C" {
         if (count == 0 || a == nullptr || b == nullptr) {
             return JNI_FALSE;
         }
-        if (count < 0 || (count & 1) == 1) {
-            throwJavaRuntimeException(env, "%s %d", "approx_equal_float - invalid count argument:", count);
+        if (count < 0) {
+            throwJavaRuntimeException(env, "%s %d", "approx_equal_float - negative count argument:", count);
             return JNI_FALSE;
         }
         if (relTol < 0.0f) {

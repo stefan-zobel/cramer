@@ -1,3 +1,3 @@
 # cramer
 
-Loose experiments with Agner Fog's VCL
+Some loose performance experiments with Agner Fog's VCL

@@ -23,7 +23,11 @@
 
 constexpr int MM_HINT_T0 = 1;
 // Fetch into all levels of the cache hierarchy
+#if defined (_WIN64) || defined (_WIN32)
 #define PREFETCH(address) (_mm_prefetch((const char*) (address), MM_HINT_T0))
+#else
+#define PREFETCH(address) (_mm_prefetch((address), MM_HINT_T0))
+#endif
 
 
 // sfc64 state

@@ -68,5 +68,11 @@
     <ClCompile Include="FloatArray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="XorShift1024StarStarPhi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sfc64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

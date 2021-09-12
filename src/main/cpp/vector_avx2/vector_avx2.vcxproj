@@ -181,8 +181,10 @@
     <ClCompile Include="JException.cpp" />
     <ClCompile Include="JExceptionUtils.cpp" />
     <ClCompile Include="Portability.cpp" />
+    <ClCompile Include="Sfc64.cpp" />
     <ClCompile Include="SlimString.cpp" />
     <ClCompile Include="vectorize.cpp" />
+    <ClCompile Include="XorShift1024StarStarPhi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

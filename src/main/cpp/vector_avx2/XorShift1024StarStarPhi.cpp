@@ -21,7 +21,7 @@
 // XorShift1024StarStar generator from:
 // Sebastiano Vigna (2016): An experimental exploration of Marsaglia’s xorshift generators, scrambled
 // https://arxiv.org/pdf/1402.6246.pdf
-// (this one use a better multiplier constant which eliminates linearity from one of the lowest bits)
+// (this one uses a better multiplier constant which eliminates linearity from one of the lowest bits)
 
 
 constexpr int MM_HINT_T0 = 1;
@@ -35,7 +35,7 @@ constexpr int MM_HINT_T0 = 1;
 
 // cuurent position
 static int pos;
-// state
+// xorshift1024 state
 static Vec8uq s[16];
 
 

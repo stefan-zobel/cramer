@@ -1,8 +1,8 @@
 /****************************  vectorf256.h   *******************************
 * Author:        Agner Fog
 * Date created:  2012-05-30
-* Last modified: 2023-06-03
-* Version:       2.02.01
+* Last modified: 2023-07-04
+* Version:       2.02.02
 * Project:       vector class library
 * Description:
 * Header file defining 256-bit floating point vector classes
@@ -416,7 +416,8 @@ public:
     // Member function to change a single element in vector
     Vec4db const insert(int index, bool value) {
         const int32_t maskl[16] = {0,0,0,0,0,0,0,0,-1,-1,0,0,0,0,0,0};
-        __m256d mask = _mm256_loadu_pd((double const*)(maskl+8-(index&3)*2)); // mask with FFFFFFFFFFFFFFFF at index position
+        const size_t two = 2;  // avoid silly warning from MS compiler
+        __m256d mask = _mm256_loadu_pd((double const*)(maskl+8-(index&3)*two)); // mask with FFFFFFFFFFFFFFFF at index position
         if (value) {
             ymm = _mm256_or_pd(ymm,mask);
         }
@@ -2427,7 +2428,7 @@ static inline Vec8f infinite8f() {
 }
 
 // Function nan8f: returns a vector where all elements are +NAN (quiet)
-static inline Vec8f nan8f(int n = 0x10) {
+static inline Vec8f nan8f(uint32_t n = 0x10) {
     return nan_vec<Vec8f>(n);
 }
 
@@ -2437,7 +2438,7 @@ static inline Vec4d infinite4d() {
 }
 
 // Function nan4d: returns a vector where all elements are +NAN (quiet)
-static inline Vec4d nan4d(int n = 0x10) {
+static inline Vec4d nan4d(uint32_t n = 0x10) {
     return nan_vec<Vec4d>(n);
 }
 

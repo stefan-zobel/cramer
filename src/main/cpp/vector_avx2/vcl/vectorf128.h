@@ -1,8 +1,8 @@
 /****************************  vectorf128.h   *******************************
 * Author:        Agner Fog
 * Date created:  2012-05-30
-* Last modified: 2023-06-03
-* Version:       2.02.01
+* Last modified: 2023-07-04
+* Version:       2.02.02
 * Project:       vector class library
 * Description:
 * Header file defining 128-bit floating point vector classes
@@ -341,7 +341,8 @@ public:
     // Member function to change a single element in vector
     Vec2db const insert(int index, bool value) {
         const int32_t maskl[8] = { 0,0,0,0,-1,-1,0,0 };
-        __m128 mask = _mm_loadu_ps((float const*)(maskl + 4 - (index & 1) * 2)); // mask with FFFFFFFFFFFFFFFF at index position
+        const size_t two = 2;  // avoid silly warning from MS compiler
+        __m128 mask = _mm_loadu_ps((float const*)(maskl + 4 - (index & 1) * two)); // mask with FFFFFFFFFFFFFFFF at index position
         if (value) {
             xmm = _mm_or_pd(xmm, _mm_castps_pd(mask));
         }
@@ -1030,7 +1031,7 @@ static inline Vec4f infinite4f() {
 }
 
 // Function nan4f: returns a vector where all elements are NAN (quiet)
-static inline Vec4f nan4f(int n = 0x10) {
+static inline Vec4f nan4f(uint32_t n = 0x10) {
     return nan_vec<Vec4f>(n);
 }
 
@@ -2422,7 +2423,7 @@ static inline Vec2d infinite2d() {
 }
 
 // Function nan2d: returns a vector where all elements are +NAN (quiet)
-static inline Vec2d nan2d(int n = 0x10) {
+static inline Vec2d nan2d(uint32_t n = 0x10) {
     return nan_vec<Vec2d>(n);
 }
 
